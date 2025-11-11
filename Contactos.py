@@ -18,7 +18,6 @@ def app():
     mostrar_menu()
     
     #Preguntar al Usuario la acción a realizar
-    
     preguntar = True
     while preguntar:
         opcion = input('Seleccione una opcion: \r\n')
@@ -38,10 +37,23 @@ def app():
             buscar_contacto()
             preguntar = False
         elif opcion == 5:
-            print('Eliminar Contacto')
+            eliminar_contacto()
             preguntar = False
         else: 
             print('Opcion no valida, digite otra opcion:')
+            
+def eliminar_contacto():
+    nombre = input('Seleccione el Contacto que desea eliminar: \r\n')
+    
+    try:
+        os.remove(CARPETA + nombre + EXTENSION)
+        print('\r\nEliminado correctamente')
+    except FileNotFoundError:
+        print('No existe ese contacto')
+        
+    #reiniciar la app
+    app()
+
             
 def buscar_contacto():
     nombre = input('Seleccione el Contacto que desea buscar: \r\n')
@@ -52,13 +64,10 @@ def buscar_contacto():
                 for linea in contacto: 
                     print(linea.rstrip())
                 print('\r\n')
-    except IOError:
+    except IOError as e:
         print('El archivo no existe')
-        print(IOError)
+        print(e)
         
-    #reiniciar la app
-    app()
-
 #Consultar datos de un archivo txt que ya hemos creado
 def mostrar_contactos():
     archivos = os.listdir(CARPETA)
@@ -72,7 +81,7 @@ def mostrar_contactos():
                 print(linea.rsplit())
            #Imprime el separador     
             print('\r\n')
-
+            
 def editar_contacto():
     print('Escribe el nombre del contacto a editar')         
     nombre_anterior = input('Nombre del contacto que desea editar: \r\n')   
